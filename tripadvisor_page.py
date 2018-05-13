@@ -57,8 +57,9 @@ df.to_csv(path+'TripAdvisor_page.csv', index=False, encoding='utf-8')
 
 # scrape content
 df = pd.read_csv(path+'TripAdvisor_page.csv')
+total_len = len(df)
+iteration = 1
 for u in df.url:
-    print u
     driver.get(u)
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     # info_block
@@ -91,12 +92,13 @@ for u in df.url:
         driver.find_element_by_css_selector('#taplc_resp_hr_atf_hotel_info_0 > div > div.ui_column.is-12-tablet.is-2-mobile.hotelActionsColumn > div > div > div > div.is-hidden-mobile.blEntry.website.ui_link > span.blue_test.detail').click()
         driver.switch_to_window(driver.window_handles[1])
         hotel_url.append(driver.current_url)
-        #print driver.current_url
         driver.close()
         driver.switch_to_window(driver.window_handles[0])
     except:
         hotel_url.append(None)
-
+    if iteration % 100 ==0:
+        print 'process = {}'.format(iteration/total_len)
+    iteration += 1
 
 
 df = pd.DataFrame({
