@@ -3,17 +3,16 @@ import numpy as np
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import requests
-#import re
 import time
 
 path ='/Users/charlie/Desktop/Tripadvisor/'
 
-#driver = webdriver.Chrome(path + 'chromedriver')
-driver = webdriver.PhantomJS()
+driver = webdriver.Chrome(path + 'chromedriver')
+#driver = webdriver.PhantomJS()
 driver.get('https://www.tripadvisor.com.tw/Hotels-g294225-Indonesia-Hotels.html')
-driver.set_window_size(2560, 1600)
+#driver.set_window_size(2560, 1600)
 print driver.get_window_size()
-#driver.maximize_window()
+driver.maximize_window()
 #print driver.get_window_size()
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 domain = 'https://www.tripadvisor.com.tw'
@@ -21,9 +20,10 @@ domain = 'https://www.tripadvisor.com.tw'
 # columns
 hotel_name = []
 url = []
+n_comment = []
+rank_in_country = []
 address =[]
 phone = []
-n_comment = []
 rank = []
 comment_star = []
 p_Excellent = []
@@ -44,14 +44,19 @@ page_down = "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=docume
 
 for p in range(int(soup.select(check_last_page)[0].get('data-page-number'))):
     print 'the number of page = {}'.format(p)
-    for element in soup.find_all('div', {"class": "listing_title"}):
-        hotel_name.append(element.text)
-        url.append(domain+element.find('a').get('href'))
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    for element in soup.find_all('div', {"class": "ui_column main_col allowEllipsis"}):
+        hotel_name.append(element.find('div', {"class": "listing_title"}).text)
+        url.append(domain+element.find('div', {"class": "listing_title"}).find('a').get('href'))
+        n_comment.append(element.find('a', {"class": "review_count"}).text)
+        rank_in_country.append(element.find('div', {"class": "popindex"}).text)
     driver.execute_script(page_down)
     time.sleep(5)
     driver.find_element_by_xpath(next_page).click()
+    time.sleep(5)
 
-df = pd.DataFrame({'hotel_name':hotel_name, 'url':url })
+df = pd.DataFrame({'hotel_name':hotel_name, 'url':url,
+                   'n_comment':n_comment, 'rank_in_country':rank_in_country })
 
 df.to_csv(path+'TripAdvisor_page.csv', index=False, encoding='utf-8')
 
