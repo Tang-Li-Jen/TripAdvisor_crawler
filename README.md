@@ -12,4 +12,8 @@ This project can help you scrape hotel information from Tripadvisor. I divide th
 2. Set your file path
 3. set your main url
  
- 
+## To Be Continue
+1. Country selection
+2. Data selection
+3. Room selection
+4. Cookie usage
