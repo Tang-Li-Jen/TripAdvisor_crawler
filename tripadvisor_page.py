@@ -74,7 +74,7 @@ for u in df.url:
         phone.append(info_block.find('span', {'class':"is-hidden-mobile detail"}).text)
     except AttributeError:
         phone.append(None)
-    n_comment.append(info_block.find('span', {'class':"reviewCount"}).text)
+    #n_comment.append(info_block.find('span', {'class':"reviewCount"}).text)
     rank.append(info_block.find('span', {'class':"header_popularity popIndexValidation"}).text)
     comment_star.append(soup.find('span', {'class':'overallRating'}).text)
     # about_block
