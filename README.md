@@ -1,4 +1,4 @@
-# TripAdvisor_crawler
+# Tripadvisor_crawler
 This project can help you scrape hotel information from Tripadvisor. I divide the process into three steps as following:
 ## Step1
  In tripadvisor_page.py, scrape and save hotels' basic information ex. hotal name, url, number of comments, hotel rank in country, etc. 
