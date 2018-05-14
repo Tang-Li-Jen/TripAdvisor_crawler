@@ -1,4 +1,5 @@
 # TripAdvisor_crawler
+This project can help you scrape hotel information from Tripadvisor. 
 ## Step1
  Scrape and save hotels' basic information ex. hotal name, url, number of comments, hotel rank in country, etc. 
 ## Step2
