@@ -14,6 +14,6 @@ This project can help you scrape hotel information from Tripadvisor. I divide th
  
 ## To Be Continued
 1. Country selection
-2. Data selection
+2. Date selection
 3. Room selection
 4. Cookie usage
