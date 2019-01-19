@@ -4,3 +4,4 @@ chromedriver
 tripadvisor_page.py
 TripAdvisor_FirstPage.csv
 TripAdvisor_page.csv
+data_manipulation.py
