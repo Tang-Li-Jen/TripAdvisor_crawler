@@ -1,6 +1,5 @@
 chromedriver
-data
 .ipynb_checkpoints
 *.ipynb
+tripadvisor_page.py
 *.csv
-
