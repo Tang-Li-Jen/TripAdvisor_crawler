@@ -4,11 +4,15 @@ import csv
 import numpy as np
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from fake_useragent import UserAgent
 import requests
 import time
 import re
 
 domain = 'https://www.tripadvisor.com.tw'
+ua = UserAgent()
+header = {'User-Agent':str(ua.chrome)}
+
 df = pd.read_csv('./data/url_parser.csv')
 total_hotels = len(df)
 debug = True
@@ -28,7 +32,7 @@ with open('./data/content_parser.csv', 'a') as csvfile:
     for index, u in enumerate(df['url'][:limit]):
         hotel_id = df['hotel_id'][index]
         print('process = {}/{}'.format(index+1, total_hotels))
-        r = requests.get(u)
+        r = requests.get(u, headers=header)
         soup = BeautifulSoup(r.text, 'html.parser')
         # info_block
         info_block = soup.find('div', {'id':"atf_header"})
