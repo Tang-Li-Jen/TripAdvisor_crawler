@@ -1,1 +1,6 @@
 chromedriver
+data
+.ipynb_checkpoints
+*.ipynb
+*.csv
+

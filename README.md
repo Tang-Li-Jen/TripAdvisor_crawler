@@ -8,8 +8,9 @@ This project can help you scrape hotel information from Tripadvisor. I divide th
  In data_manipulation.py, do feature engineering or regular expression to extact content on Step2 output.
 
 ## Preparation 
-1. Use Chromedriver or PhantomJS
-2. set your main url
+1. Python2
+2. Use Chromedriver or PhantomJS
+3. Set your target_url in url_parser.py
  
 ## To Be Continued
 1. Country selection
