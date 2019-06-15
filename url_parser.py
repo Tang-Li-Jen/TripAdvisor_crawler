@@ -1,17 +1,26 @@
 # -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.support.select import Select
 import requests
 import time
 import csv
 import re
 
 options = webdriver.ChromeOptions()
-options.add_argument('headless')
+# options.add_argument('headless')
 target_url = 'https://www.tripadvisor.com.tw/Hotels-g294225-Indonesia-Hotels.html'
 driver = webdriver.Chrome('./chromedriver', chrome_options=options)
 driver.get(target_url)
-driver.maximize_window()
+# driver.maximize_window()
+
+# Property Type expand all
+expand_all = driver.find_element_by_xpath("""//*[@id="component_7"]/div/div[2]/div[3]/div[2]/div[7]/span""")
+expand_all.click()
+
+for i in range(2, 13):
+    checkbox = driver.find_element_by_xpath('//*[@id="component_7"]/div/div[2]/div[3]/div[2]/div[%i]/div/label/div/span[1]/a/span' %i)
+    checkbox.click()
 
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 domain = 'https://www.tripadvisor.com.tw'
@@ -29,7 +38,7 @@ with open('./data/url_parser.csv', 'a') as csvfile:
     writer.writeheader()
     index = 0
 
-    for p in page_list:
+    for p in page_list[:2]:
         print('the number of page = {0}/{1}'.format(p+1, len(page_list)))
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         hotel_blocks = soup.find_all('div', {"class": "prw_rup prw_meta_hsx_responsive_listing ui_section listItem"})
@@ -52,9 +61,9 @@ with open('./data/url_parser.csv', 'a') as csvfile:
                            )
         try:
             driver.execute_script(page_down)
-            time.sleep(5)
+            time.sleep(10)
             driver.find_element_by_xpath(next_page).click()
-            time.sleep(8)
+            time.sleep(10)
         except:
             print('in the end')
 
