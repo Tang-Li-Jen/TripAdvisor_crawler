@@ -24,8 +24,8 @@ start_day, start_month_year = start_date_splitter[0], start_date_splitter[1]
 end_date_splitter = end_date.split('-')
 end_day, end_month_year = end_date_splitter[0], end_date_splitter[1]
 
-## set start date
-print('Selecting start date...')
+## set check in date
+print('Selecting check in date...')
 select_start_date = driver.find_element_by_xpath("""//*[@id="PERSISTENT_TRIP_SEARCH_BAR"]/div[1]/div/div[2]/div[1]/div/span[2]/span[2]""")
 select_start_date.click()
 
@@ -40,8 +40,8 @@ for i in [1, 2]:
 
 time.sleep(30)
 
-## set end date
-print('Selecting end date...')
+## set check out date
+print('Selecting check out date...')
 select_end_date = driver.find_element_by_xpath("""//*[@id="PERSISTENT_TRIP_SEARCH_BAR"]/div[1]/div/div[2]/div[2]/div/span[2]/span[2]""")
 select_end_date.click()
 
