@@ -1,7 +1,7 @@
 # Tripadvisor_crawler
 This project can help you scrape hotel information from Tripadvisor. I divide the process into two steps as following:
 ## Step1
- In **url_parser.py**, scrape and save **url_parser.csv** on data folder  
+ In **url_parser.py**, scrape all property types of hotels and save **url_parser.csv** in data folder  
  (including hotels' basic information ex. hotal name, url, number of comments, hotel rank in country, etc.) 
 ## Step2
  In **content_parser.py**, scrape hotels' detailed information baesd on Step1 output ex. hotel rank, phone number, numbers of comments in each rank, etc.
@@ -11,8 +11,9 @@ This project can help you scrape hotel information from Tripadvisor. I divide th
 ## Preparation 
 1. Python2
 2. Use Chromedriver or PhantomJS
-3. Set your target_url, start/end date in url_parser.py
-4. Turn off debug mode in content_parser.py
+3. Set your target_url, check in/out date in url_parser.py  
+**Note: you can only choose current and next month for check in/out date** 
+5. Turn off debug mode in content_parser.py
 
 ## Change
 1. 2019/06: Added start/end date selector, property type selector, scraped main source and price.
