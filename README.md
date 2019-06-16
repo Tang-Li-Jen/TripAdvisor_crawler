@@ -11,17 +11,18 @@ This project can help you scrape hotel information from Tripadvisor. I divide th
 ## Preparation 
 1. Python2
 2. Use Chromedriver or PhantomJS
-3. Set your target_url in url_parser.py
+3. Set your target_url, start/end date in url_parser.py
 4. Turn off debug mode in content_parser.py
 
 ## Change
-1. 2019/06: Added property type selector, scraped main source and price.
+1. 2019/06: Added start/end date selector, property type selector, scraped main source and price.
+
 ## To Be Continued
 If you have any feature requests, don't hesitate to contact me :)
 1. Country selection
-2. Date selection
-3. Room selection
-4. Cookie usage
+2. Room selection
+3. Cookie usage
 
 ## Reference
-1. Chromedriver: http://chromedriver.chromium.org
+1. Chromedriver: http://chromedriver.chromium.org  
+**Note: Please notice the version compatibility between chrome and chromedriver**
