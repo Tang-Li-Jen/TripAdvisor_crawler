@@ -15,14 +15,35 @@ driver = webdriver.Chrome('./chromedriver', chrome_options=options)
 driver.get(target_url)
 driver.maximize_window()
 
-# Start date
-select_start_date = driver.find_element_by_xpath("""//*[@id="PERSISTENT_TRIP_SEARCH_BAR"]/div[1]/div/div[2]/div[1]/div/span[2]/span[2]""")
-select_start_date.click()
-
+# Select time range
 start_date = '27-June 2019'
+end_date = '30-June 2019'
 
 start_date_splitter = start_date.split('-')
 start_day, start_month_year = start_date_splitter[0], start_date_splitter[1]
+end_date_splitter = end_date.split('-')
+end_day, end_month_year = end_date_splitter[0], end_date_splitter[1]
+
+## set start date
+print('Selecting start date...')
+select_start_date = driver.find_element_by_xpath("""//*[@id="PERSISTENT_TRIP_SEARCH_BAR"]/div[1]/div/div[2]/div[1]/div/span[2]/span[2]""")
+select_start_date.click()
+
+for i in [1, 2]:
+    year_month = driver.find_element_by_xpath("""//*[@id="BODY_BLOCK_JQUERY_REFLOW"]/span/div[3]/div/div[2]/div[3]/span[{}]/span[1]""".format(i))
+    if year_month.text == str(start_month_year):
+        for j in range(3, 45):
+            day_selector = driver.find_element_by_xpath("""//*[@id="BODY_BLOCK_JQUERY_REFLOW"]/span/div[3]/div/div[2]/div[3]/span[{}]/span[{}]""".format(i,j))
+            if day_selector.text == str(start_day):
+                day_selector.click()
+                break
+
+time.sleep(30)
+
+## set end date
+print('Selecting end date...')
+select_end_date = driver.find_element_by_xpath("""//*[@id="PERSISTENT_TRIP_SEARCH_BAR"]/div[1]/div/div[2]/div[2]/div/span[2]/span[2]""")
+select_end_date.click()
 
 for i in [1, 2]:
     year_month = driver.find_element_by_xpath("""//*[@id="BODY_BLOCK_JQUERY_REFLOW"]/span/div[3]/div/div[2]/div[3]/span[{}]/span[1]""".format(i))
