@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.keys import Keys
+import numpy as np
 import requests
 import time
 import csv
@@ -10,12 +11,12 @@ import re
 
 options = webdriver.ChromeOptions()
 # options.add_argument('headless')
-target_url = 'https://www.tripadvisor.com.tw/Hotels-g293808-Madagascar-Hotels.html'
+target_url = 'https://www.tripadvisor.com/Hotels-g293808-Madagascar-Hotels.html'
 driver = webdriver.Chrome('./chromedriver', chrome_options=options)
 driver.get(target_url)
 driver.maximize_window()
 
-customize_check_date = True
+customize_check_date = False
 start_date = '27-June 2019'
 end_date = '30-June 2019'
 
@@ -81,10 +82,10 @@ tmp = soup.find_all('div', {"class": "common-filters-FilterWrapper__content--3Rx
 num_of_property_type = len(tmp[2].find_all('div', {'class':'common-filters-CheckboxList__checkboxWrapper--3_ghM'}))
 
 for i in range(2, num_of_property_type+1):
-    checkbox = driver.find_element_by_xpath('//*[@id="{0}"]/div/div[2]/div[3]/div[2]/div[{1}]/div/label/div/span[1]/a/span'.format(component_id, i))
+    checkbox = driver.find_element_by_xpath('//*[@id="{0}"]/div/div[2]/div[3]/div[2]/div[{1}]/div/label/div/span/a/span'.format(component_id, i))
     checkbox.click()
 
-time.sleep(20)
+time.sleep(60)
 
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 domain = 'https://www.tripadvisor.com.tw'
@@ -102,7 +103,7 @@ with open('./data/url_parser.csv', 'a') as csvfile:
     writer.writeheader()
     index = 0
 
-    for p in page_list[:2]:
+    for p in page_list:
         print('the number of page = {0}/{1}'.format(p+1, len(page_list)))
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         hotel_blocks = soup.find_all('div', {"class": "prw_rup prw_meta_hsx_responsive_listing ui_section listItem"})
@@ -116,25 +117,32 @@ with open('./data/url_parser.csv', 'a') as csvfile:
             rank_in_country = element.find('div', {"class": "popindex"}).text
 
             price_and_source = element.find('div', {'class':'priceBlock ui_column is-12-tablet'})
-            main_price = price_and_source.find('div', {'class':'price __resizeWatch'}).text
-            main_source = price_and_source.find('span', {'class':'provider_text'}).text
 
+            try:
+                main_price = price_and_source.find('div', {'class':'price __resizeWatch'}).text
+            except:
+                main_price = np.NaN
+
+            try:
+                main_source = price_and_source.find('span', {'class':'provider_text'}).text
+            except:
+                main_source = np.NaN
             writer.writerow(
                             {
                                 'hotel_id':index,
-                                'hotel_name':hotel_name.encode("utf-8"),
-                                'main_source':main_source.encode("utf-8"),
+                                'hotel_name':hotel_name,#.encode("utf-8"),
+                                'main_source':main_source,#.encode("utf-8"),
                                 'main_price':main_price,
                                 'n_comment':n_comment,
-                                'rank_in_country':rank_in_country.encode("utf-8"),
+                                'rank_in_country':rank_in_country,#.encode("utf-8"),
                                 'url':url
                             }
                            )
         try:
             driver.execute_script(page_down)
-            time.sleep(15)
+            time.sleep(60)
             driver.find_element_by_xpath(next_page).click()
-            time.sleep(15)
+            time.sleep(60)
         except:
             print('in the end')
 
