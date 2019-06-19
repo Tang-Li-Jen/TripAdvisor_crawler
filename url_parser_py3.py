@@ -29,7 +29,7 @@ with open('./data/url_parser.csv', 'a') as csvfile:
     writer.writeheader()
     index = 0
 
-    for p in page_list[:2]:
+    for p in page_list:
         print('the number of page = {0}/{1}'.format(p+1, len(page_list)))
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         hotel_blocks = soup.find_all('div', {"class": "prw_rup prw_meta_hsx_responsive_listing ui_section listItem"})
