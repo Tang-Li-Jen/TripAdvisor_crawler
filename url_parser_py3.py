@@ -8,23 +8,23 @@ import re
 
 options = webdriver.ChromeOptions()
 options.add_argument('headless')
-target_url = 'https://www.tripadvisor.com.tw/Hotels-g294225-Indonesia-Hotels.html'
+target_url = 'https://www.tripadvisor.com.au/Hotels-g255055-Australia-Hotels.html'
 driver = webdriver.Chrome('./chromedriver', chrome_options=options)
 driver.get(target_url)
 driver.maximize_window()
 
 soup = BeautifulSoup(driver.page_source, 'html.parser')
-domain = 'https://www.tripadvisor.com.tw'
+domain = 'https://www.tripadvisor.com.au'
 
 # scrape page
 next_page = '//*[@id="taplc_main_pagination_bar_dusty_hotels_resp_0"]/div/div/div/span[2]'
-check_last_page = '#taplc_main_pagination_bar_dusty_hotels_resp_0 > div > div > div > div > span.pageNum.last.taLnk'
 page_down = "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;"
-page_list = range(int(soup.select(check_last_page)[0].get('data-page-number')))
+
+page_list = range(int(soup.find("div", {"class": "pageNumbers"}).find_all("a")[-1].get("data-page-number")))
 print("Total number of page: {}".format(len(page_list)))
 
 with open('./data/url_parser.csv', 'a') as csvfile:
-    fieldnames = ['hotel_id', 'hotel_name', 'n_comment', 'rank_in_country', 'url']
+    fieldnames = ['hotel_id', 'hotel_name', 'n_comment', 'n_star', 'url']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
     index = 0
@@ -40,13 +40,14 @@ with open('./data/url_parser.csv', 'a') as csvfile:
             url = domain+element.find('div', {"class": "listing_title"}).find('a').get('href')
             n_comment = element.find('a', {"class": "review_count"}).text
             n_comment = re.sub('[^0-9,]', "", n_comment).replace(',','')
-            rank_in_country = element.find('div', {"class": "popindex"}).text
+            n_star = element.find('a', {"data-clicksource":"BubbleRating"}).attrs['alt']
+            
             writer.writerow(
                             {
                                 'hotel_id':index,
                                 'hotel_name':hotel_name,
                                 'n_comment':n_comment,
-                                'rank_in_country':rank_in_country,
+                                'n_star':n_star,
                                 'url':url
                             }
                            )
