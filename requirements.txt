@@ -1,5 +1,5 @@
 beautifulsoup4==4.7.0
-requests==2.21.0
+requests==2.31.0
 pandas==0.23.4
 selenium==3.141.0
 fake-useragent==0.1.11
